@@ -9,28 +9,42 @@
       <button type='submit'>Load profile</button>
     </form>
 
-    <div class='profile-container'>
+    <div class='profile-container'>     </div>
+
+    <template id="profile-template">
       <div class="profile">
         <div class="left">
-          <img src="https://avatars.githubusercontent.com/u/5008648?">
+          <img src="{{ avatar_url }}">
         </div>
 
         <div class="right">
           <h3>
-            <a href="https://github.com/tansaku">
+            <a href="{{ html_url }}">
               tansaku
             </a>
           </h3>
-          <h4>Repos: 120</h4>
-          <h4>Followers: 122</h4>
-
+          <h4>Repos: {{ public_repos }}</h4>
+          <h4>Followers: {{ followers }}</h4>
         </div>
+
         <br clear="all">
 
       </div>
+    </template>
 
-    </div>
 
     <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.js'></script>
+    <script>
+
+    $(document).ready(function(){
+      $.get('https://api.github.com/users/tansaku', function(user){
+        var newProfile = Mustache.render($('#profile-template').html(), user);
+        $('.profile-container').append(newProfile);
+      });
+    });
+
+    </script>
+
   </body>
 </html>
