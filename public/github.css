@@ -1,3 +1,10 @@
+body {
+
+  background: url(http://images5.alphacoders.com/403/403306.jpg);
+  background-size: 100%;
+
+}
+
 input, button {
   font-size: 20px;
   padding: 5px;

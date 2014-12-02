@@ -5,8 +5,8 @@
   </head>
   <body>
     <form id='add_profile'>
-      <input id='username' placeholder='Enter a Github username'>
-      <button type='submit'>Load profile</button>
+      <input id='username' placeholder='Who ya gonna call?'>
+      <button type="submit">Load profile</button>
     </form>
 
     <div class='profile-container'>     </div>
@@ -20,7 +20,7 @@
         <div class="right">
           <h3>
             <a href="{{ html_url }}">
-              tansaku
+             {{ login }}
             </a>
           </h3>
           <h4>Repos: {{ public_repos }}</h4>
@@ -38,9 +38,18 @@
     <script>
 
     $(document).ready(function(){
-      $.get('https://api.github.com/users/tansaku', function(user){
-        var newProfile = Mustache.render($('#profile-template').html(), user);
+
+      $('#add_profile').submit(function(){
+
+        event.preventDefault();
+
+        var userName = $('#username').val();
+
+        $.get('https://api.github.com/users/'+userName, function(user){
+          var newProfile = Mustache.render($('#profile-template').html(), user);
         $('.profile-container').append(newProfile);
+        });
+
       });
     });
 
