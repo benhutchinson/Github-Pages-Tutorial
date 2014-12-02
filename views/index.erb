@@ -37,21 +37,20 @@
     <script src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.js'></script>
     <script>
 
-    $(document).ready(function(){
-
-      $('#add_profile').submit(function(){
-
-        event.preventDefault();
-
-        var userName = $('#username').val();
-
-        $.get('https://api.github.com/users/'+userName, function(user){
+      function addProfileFromUsername(username){
+        $.get('https://api.github.com/users/'+ username + "?client_id=<%=ENV['CLIENT_ID']%>&client_secret=<%=ENV['CLIENT_SECRET']%>", function(user){
           var newProfile = Mustache.render($('#profile-template').html(), user);
-        $('.profile-container').append(newProfile);
+          $(newProfile).appendTo('.profile-container').slideDown(100);
+        }).error(function(){
+          alert('No user with the name: ' + username);
+        })
+      }
+      $(document).ready(function(){
+        $('#add_profile').on('submit', function(event){
+          event.preventDefault();
+          addProfileFromUsername($('#username').val());
         });
-
       });
-    });
 
     </script>
 
