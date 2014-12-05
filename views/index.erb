@@ -4,9 +4,10 @@
     <link href='github.css' rel='stylesheet'>
   </head>
   <body>
+
     <form id='add_profile'>
-      <input id='username' placeholder='Who ya gonna call?'>
-      <button type="submit">Load profile</button>
+      <input id='username' placeholder='Who shall we stalk?'>
+      <button type="submit">CLICK</button>
     </form>
 
     <div class='profile-container'>    
@@ -27,12 +28,22 @@
           </h3>
           <h4>Repos: {{ public_repos }}</h4>
           <h4>Followers: {{ followers }}</h4>
+          <h4>Commits Across All Projects:<span class="commits"></span></h4>
+          <p class="chef">FORKED SO MUCH.  SURE YOU DON'T WORK HERE?
+          <img src="McD.png">
+          </p>
+          <p class="intraining">GET ON THE WEIGHTS.
+          <img src="get-on-the-weights.png">
+          </p>
         </div>
         <a class='close' href='#'>✖</a>
         <br clear="all">
 
-      </div>
+        </div>
+
     </template>
+
+
 
     <div class='modal'>
       <h2>User not found!</h2>
@@ -49,6 +60,45 @@
         $.get('https://api.github.com/users/'+ username + "?client_id=<%=ENV['CLIENT_ID']%>&client_secret=<%=ENV['CLIENT_SECRET']%>", function(user){
           var newProfile = Mustache.render($('#profile-template').html(), user);
           $(newProfile).appendTo('.profile-container').slideDown(100);
+
+            var totalCommits = 0;
+
+          $.get('https://api.github.com/users/'+ username + "/repos?client_id=<%=ENV['CLIENT_ID']%>&client_secret=<%=ENV['CLIENT_SECRET']%>", function(userRepos){
+            console.log(userRepos.length);
+            
+            var forks = 0;
+
+            for(i=0; i < userRepos.length; i++){
+              forks = forks + userRepos[i].forks_count;
+              };
+              
+                if(forks>0){
+                  $('.chef').show();
+                } else {
+                  $('.intraining').show();
+                };
+              
+              var commitsArray = []
+             
+              for(i=0; i < userRepos.length; i++){
+
+                reposName = userRepos[i].name;
+
+                $.get('https://api.github.com/repos/'+ username + '/' +reposName + "/commits?client_id=<%=ENV['CLIENT_ID']%>&client_secret=<%=ENV['CLIENT_SECRET']%>", function(commits){
+
+                  var commitCount = commits.length;
+                  totalCommits = totalCommits + commitCount;
+                  commitsArray.push(commitCount);
+                  $('.commits').text(totalCommits);
+
+                    // issue is scope of totalCommits (ie could run commits on 'always') 
+                    // or is the parent-child responsibility (i.e. append to commits vs a parent, chose closest)
+                    // or could have a completely different way of doing this?
+
+                });
+              };
+          });
+
         }).error(function(){
           $('.modal').addClass('shown');
         }).always(function(){
@@ -56,6 +106,7 @@
           $('.spinner').hide();
         })
       }
+
       $(document).ready(function(){
         $('#add_profile').on('submit', function(event){
           event.preventDefault();
