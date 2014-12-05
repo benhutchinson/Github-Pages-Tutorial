@@ -28,7 +28,7 @@
           </h3>
           <h4>Repos: {{ public_repos }}</h4>
           <h4>Followers: {{ followers }}</h4>
-          <h4>Commits Across All Projects:<span class="commits"></span></h4>
+          <h4>Commits Across Last 30 Public Projects:<span class="commits"></span></h4>
           <p class="chef">FORKED SO MUCH.  SURE YOU DON'T WORK HERE?
           <img src="McD.png">
           </p>
@@ -89,11 +89,7 @@
                   var commitCount = commits.length;
                   totalCommits = totalCommits + commitCount;
                   commitsArray.push(commitCount);
-                  $('.commits').text(totalCommits);
-
-                    // issue is scope of totalCommits (ie could run commits on 'always') 
-                    // or is the parent-child responsibility (i.e. append to commits vs a parent, chose closest)
-                    // or could have a completely different way of doing this?
+                  $('.commits:last').text(totalCommits);
 
                 });
               };
