@@ -29,10 +29,10 @@
           <h4>Repos: {{ public_repos }}</h4>
           <h4>Followers: {{ followers }}</h4>
           <h4>Commits Across Last 30 Public Projects:<span class="commits"></span></h4>
-          <p class="chef"><h4>More Forks than....</h4>
+          <p class="chef">More Forks than....
           <img src="McD.png">
           </p>
-          <p class="intraining"><h4>No Forks?  Get On The Weights!</h4>
+          <p class="intraining">No Forks?  Get On The Weights!
           <img src="get-on-the-weights.png">
           </p>
         </div>
@@ -73,9 +73,9 @@
               };
               
                 if(forks>0){
-                  $('.chef').show();
+                  $('.chef:last').show();
                 } else {
-                  $('.intraining').show();
+                  $('.intraining:last').show();
                 };
               
               var commitsArray = []
